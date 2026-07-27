@@ -32,11 +32,18 @@
                     <ul class="dropdown-menu text-nowrap px-2 m-2">
                         <AuthorizeView>
                             <Authorized>
+                                @{
+                                    string? firstName = context.User.FindFirst("FirstName")?.Value;
+                                    string? lastName = context.User.FindFirst("LastName")?.Value;
+                                    string? profilePicture = context.User.FindFirst("ProfilePictureUrl")?.Value;
+                                }
                                 <div class="nav-item px-3">
                                     <NavLink class="nav-link" href="Account/Manage">
-                                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+                                        <img src="@profilePicture" class="profile-picture" />
+                                        @firstName @lastName
                                     </NavLink>
                                 </div>
+
                                 <div class="nav-item px-3">
                                     <form action="Account/Logout" method="post">
                                         <AntiforgeryToken />
