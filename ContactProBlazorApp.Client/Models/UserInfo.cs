@@ -1,4 +1,4 @@
-﻿namespace ContactProBlazorApp.Client
+﻿namespace ContactProBlazorApp.Client.Models
 {
     // Add properties to this class and update the server and client AuthenticationStateProviders
     // to expose more information about the authenticated user to the client.
@@ -11,6 +11,8 @@
         public required string FirstName { get; set; }
 
         public required string LastName { get; set; }
+
+        public required string ProfilePictureUrl { get; set; }
 
     }
 }
