@@ -1,13 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using ContactProBlazorApp.Client.Models.Enums;
 using System.ComponentModel.DataAnnotations;
-using ContactProBlazorApp.Client.Models.Enums;
-using ContactProBlazorApp.Data;
-using ContactProBlazorApp.Client.Models;
-using ContactProBlazorApp.Helpers;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ContactProBlazorApp.Models
+namespace ContactProBlazorApp.Client.Models
 {
-    public class Contact
+    public class ContactDTO
     {
         private DateTimeOffset _created;
         private DateTimeOffset? _birthdate;
@@ -70,47 +67,9 @@ namespace ContactProBlazorApp.Models
             set => _created = value.ToUniversalTime();
         }
 
-        [Required]
-        public string? AppUserId { get; set; }
 
-        public virtual ApplicationUser? ApplicationUser { get; set; }
+        public string? ProfileImageUrl { get; set; }
 
-        public Guid? ImageId { get; set; }
-
-        public virtual ImageUpload? Image { get; set; }
-
-        public virtual ICollection<Category> Categories { get; set; } = [];
-
-        public ContactDTO ToDTO()
-        {
-            ContactDTO dto = new ContactDTO()
-            {
-                Id = this.Id,
-                FirstName = this.FirstName,
-                LastName = this.LastName,
-                Birthdate = this.Birthdate,
-                Address1 = this.Address1,
-                Address2 = this.Address2,
-                City = this.City,
-                State = this.State,
-                ZipCode = this.ZipCode,
-                Email = this.Email,
-                PhoneNumber = this.PhoneNumber,
-                Created = this.Created,
-                ProfileImageUrl = this.ImageId.HasValue ? $"/uploads/{ImageId}" : ImageHelper.DefaultProfilePictureUrl
-            }; 
-
-            foreach (Category category in Categories)
-            {
-                //prevent circular reerence
-                category.Contacts.Clear();
-                dto.Categories.Add(category.ToDTO());
-
-            }
-
-            return dto;
-        }
-
+        public virtual ICollection<CategoryDTO> Categories { get; set; } = [];
     }
-
 }

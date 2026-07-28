@@ -147,7 +147,7 @@ namespace ContactProBlazorApp.Data
                         contact.Address2 = new Faker().Address.SecondaryAddress();
                     }
 
-                    contact.Created = DateTimeOffset.Now;
+                    contact.Created = new Faker().Date.Between(DateTime.Now.AddYears(-1), DateTime.Now);
                 }
 
                 demoContacts.AddRange(newContacts);
