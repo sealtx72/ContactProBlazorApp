@@ -1,7 +1,10 @@
-using ContactProBlazorApp.Client.Pages;
+using ContactProBlazorApp.Client.Components.Pages;
+using ContactProBlazorApp.Client.Services.Interfaces;
 using ContactProBlazorApp.Components;
 using ContactProBlazorApp.Components.Account;
 using ContactProBlazorApp.Data;
+using ContactProBlazorApp.Services;
+using ContactProBlazorApp.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +32,7 @@ else if (dbConnection == "pgConnection")
 {
     connectionString = builder.Configuration.GetSection("pgSettings")["pgConnection"];
 
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 }
 
@@ -54,8 +57,6 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-
-
 //var connectionString = builder.Configuration.GetConnectionString("DbConnection") ?? throw new InvalidOperationException("Connection string 'DbConnection' not found.");
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -71,6 +72,12 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+//Repositories
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+//DTO Services
+builder.Services.AddScoped<ICategoryDTOService, CategoryDTOService>();
 
 var app = builder.Build();
 

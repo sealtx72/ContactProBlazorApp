@@ -1,0 +1,48 @@
+﻿@page "/categories"
+@attribute [Authorize]
+@rendermode InteractiveServer
+
+@inject ICategoryDTOService CategoryService
+
+<PageTitle>Contact Pro | Categories</PageTitle>
+
+<div class="container">
+    <EditForm Model="@newCategory" OnValidSubmit="HandleNewCategory">
+        <DataAnnotationsValidator />
+
+        <ul class="list-group my-3">
+            <li class="list-group-item">
+                <label for="CategoryName" class="form-label">Add a Category</label>
+                <div class="d-flex gap-3">
+                    <InputText @bind-Value="newCategory.Name" class="form-control" placeholder="Category Name" />
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-floppy"></i>
+                    </button>
+                </div>
+
+            </li>
+        </ul>
+    </EditForm>
+</div>
+
+
+
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState>? authStateTask { get; set; }
+
+    private UserInfo? userInfo;
+
+    private CategoryDTO newCategory = new CategoryDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        userInfo = await UserInfoHelper.GetUserInfoAsync(authStateTask);
+    }
+
+    private async Task HandleNewCategory()
+    {
+        await CategoryService.CreateCategoryAsync(newCategory, userInfo!.UserId);
+    }
+}
