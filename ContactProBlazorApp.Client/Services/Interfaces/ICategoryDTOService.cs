@@ -6,5 +6,13 @@ namespace ContactProBlazorApp.Client.Services.Interfaces
     {
         //Create
         Task<CategoryDTO> CreateCategoryAsync(CategoryDTO categoryDTO, string userId);
+
+        //Read
+        Task<List<CategoryDTO>> GetCategoriesAsync(string userId);
+
+        Task<CategoryDTO?> GetCategoryByIdAsync(int id, string userId);
+
+        //Update
+        Task UpdateCategoryAsync(CategoryDTO category, string userId);
     }
 }

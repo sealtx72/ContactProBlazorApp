@@ -2,7 +2,10 @@
 <div class="accordion" id="@accordionId">
     @foreach (var category in Categories)
     {
-        <CategoryAccordionItem @key="category.Id" Category="category" parentId="@accordionId" />
+        <CategoryAccordionItem @key="category.Id" 
+        Category="category" 
+        parentId="@accordionId"
+        OnChange="OnCategoryChange"/>
     }
 </div>
 
@@ -12,4 +15,7 @@
     [Parameter, EditorRequired]
     public IEnumerable<CategoryDTO> Categories { get; set; } = [];
 
+    [Parameter, EditorRequired]
+    public EventCallback<CategoryDTO> OnCategoryChange { get; set; }
+    
 }

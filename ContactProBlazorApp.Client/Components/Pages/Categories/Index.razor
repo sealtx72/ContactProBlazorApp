@@ -19,12 +19,12 @@
                         <i class="bi bi-floppy"></i>
                     </button>
                 </div>
-
             </li>
         </ul>
     </EditForm>
-</div>
+    <CategoryAccordion Categories="categories" OnCategoryChange="UpdateCategory" />
 
+</div>
 
 
 
@@ -36,13 +36,25 @@
 
     private CategoryDTO newCategory = new CategoryDTO();
 
+    private IEnumerable<CategoryDTO> categories = [];
+
     protected override async Task OnInitializedAsync()
     {
         userInfo = await UserInfoHelper.GetUserInfoAsync(authStateTask);
+        categories = await CategoryService.GetCategoriesAsync(userInfo!.UserId);
     }
 
     private async Task HandleNewCategory()
     {
         await CategoryService.CreateCategoryAsync(newCategory, userInfo!.UserId);
+        newCategory = new CategoryDTO();
+        
+        categories = await CategoryService.GetCategoriesAsync(userInfo!.UserId);
+    }
+
+    private async Task UpdateCategory(CategoryDTO category)
+    {
+        await CategoryService.UpdateCategoryAsync(category, userInfo!.UserId);
+        categories = await CategoryService.GetCategoriesAsync(userInfo!.UserId);
     }
 }
